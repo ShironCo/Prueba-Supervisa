@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.pruebatecnicasupervisa.presentation.ui.components.DatePickerFieldToModal
 import com.example.pruebatecnicasupervisa.presentation.ui.components.TopBar
 import com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel.AddTaskEvents
 import com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel.AddTaskViewModel
@@ -118,7 +119,7 @@ fun AddTaskForm(
         ) {
             viewModel.onEvent(AddTaskEvents.SetTitle(it))
         }
-
+        DatePickerFieldToModal()
     }
 }
 
