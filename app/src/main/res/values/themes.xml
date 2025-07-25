@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.PruebaTecnicaSupervisa" parent="android:Theme.Material.NoActionBar">
+    </style>
+
+    <style name="Theme.SplashSupervisa" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.PruebaTecnicaSupervisa</item>
+    </style>
+
+</resources>
