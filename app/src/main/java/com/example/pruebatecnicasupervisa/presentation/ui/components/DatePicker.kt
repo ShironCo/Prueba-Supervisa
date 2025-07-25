@@ -37,6 +37,7 @@ fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
     var showModal by remember { mutableStateOf(false) }
 
     OutlinedTextField(
+        readOnly = true,
         value = selectedDate?.let { convertMillisToDate(it) } ?: "",
         onValueChange = { },
         placeholder = { Text("Fecha de vencimiento DD/MM/AAAA")},
