@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.PruebaTecnicaSupervisa" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@color/blue80</item>
     </style>
 
     <style name="Theme.SplashSupervisa" parent="Theme.SplashScreen.IconBackground">

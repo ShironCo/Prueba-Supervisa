@@ -1,8 +1,11 @@
 package com.example.pruebatecnicasupervisa.presentation.screen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,7 +24,12 @@ fun TaskScreen(){
 
 @Composable
 fun TaskBody(modifier: Modifier){
-    Column {
-        Text(text = "Gestiona tus tareas de forma eficiente y organizada")
+    Surface(
+        modifier = modifier.fillMaxSize()
+    ){
+        Column {
+            Text(text = "Gestiona tus tareas de forma eficiente y organizada")
+        }
     }
+
 }

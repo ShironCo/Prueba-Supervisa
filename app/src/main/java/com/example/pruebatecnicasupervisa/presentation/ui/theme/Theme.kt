@@ -17,21 +17,21 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = Blue80,
-    onSurface = White,
-    surface = Blue80
+    onSurface = Blue80,
+    surface = White
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Blue80,
-    onSurface = White,
-    surface = Blue80
+    onSurface = Blue80,
+    surface = White
 )
 
 @Composable
 fun PruebaTecnicaSupervisaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
