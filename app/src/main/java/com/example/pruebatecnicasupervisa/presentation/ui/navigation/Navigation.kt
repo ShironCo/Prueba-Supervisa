@@ -28,7 +28,7 @@ fun Navigation (){
             enterTransition = { slideInHorizontally(initialOffsetX = { 1000 })},
             exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 })}
             ){
-            AddTaskScreen()
+            AddTaskScreen(navHostController)
         }
     }
 }

@@ -26,9 +26,13 @@ fun TopBar(
             style = MaterialTheme.typography.titleMedium
         )
     }, navigationIcon = {
-        if (showIcon)
-        IconButton(onClick = {onClick()}) {
-            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Volver a la pantalla principal")
+        if (showIcon) {
+            IconButton(onClick = { onClick() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Volver a la pantalla principal"
+                )
+            }
         }
     },
         colors = TopAppBarDefaults.topAppBarColors(
