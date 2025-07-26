@@ -163,7 +163,7 @@ fun AddTaskForm(
                         viewModel.onEvent(AddTaskEvents.SetDescription(it))
                     }
                 }
-                DatePickerFieldToModal{
+                DatePickerFieldToModal(value = states.dueDate){
                     viewModel.onEvent(AddTaskEvents.SetDueDate(it))
                 }
                 Text(
@@ -213,7 +213,9 @@ fun AddTaskForm(
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                                  viewModel.onEvent(AddTaskEvents.SaveTask)
+                        },
                         colors = ButtonDefaults.buttonColors(
                             contentColor = MaterialTheme.colorScheme.surface,
                             containerColor = MaterialTheme.colorScheme.primary

@@ -35,6 +35,7 @@ import java.util.TimeZone
 @Composable
 fun DatePickerFieldToModal(
     modifier: Modifier = Modifier,
+    value: Long?,
     onClick : (Long?) -> Unit
 
     ) {
@@ -43,7 +44,7 @@ fun DatePickerFieldToModal(
 
     OutlinedTextField(
         readOnly = true,
-        value = selectedDate?.let { convertMillisToDate(it) } ?: "",
+        value = value?.let { convertMillisToDate(it) } ?: "",
         onValueChange = { },
         placeholder = { Text("Fecha de vencimiento DD/MM/AAAA")},
         trailingIcon = {
