@@ -7,7 +7,7 @@ import com.example.pruebatecnicasupervisa.domain.model.State
 
 @Entity
 data class TaskEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     val task_id: String,
     val title: String,
     val description: String? = null,

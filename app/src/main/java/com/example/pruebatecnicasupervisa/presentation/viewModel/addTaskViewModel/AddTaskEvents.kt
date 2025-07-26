@@ -10,6 +10,8 @@ sealed interface AddTaskEvents {
     data class SetDueDate(val dueDate: Long?): AddTaskEvents
     data class SetPriority(val priority: Priority): AddTaskEvents
     data class SetState(val state: State): AddTaskEvents
-    data object SaveTask : AddTaskEvents
+
     data class DeleteTask(val task: Task): AddTaskEvents
+    data object AddTask : AddTaskEvents
+    data class SaveTask(val task: Task) : AddTaskEvents
 }

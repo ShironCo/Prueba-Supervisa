@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.pruebatecnicasupervisa.data.local.model.TaskEntity
-import com.example.pruebatecnicasupervisa.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 
 
@@ -17,7 +16,7 @@ interface TaskDao {
     suspend fun insertTask(taskEntity: TaskEntity)
 
 
-    @Query("SELECT * FROM Task")
+    @Query("SELECT * FROM TaskEntity")
     fun getTasks(): Flow<List<TaskEntity>>
 
     @Delete

@@ -118,13 +118,18 @@ fun AddTaskForm(
                             )
                         }
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                viewModel.onEvent(AddTaskEvents.SaveTask(states.taskList[index]))
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary,
                                 contentColor = MaterialTheme.colorScheme.surface
                             )
                         ) {
-                            Icon(imageVector = Icons.Default.Add, contentDescription = "Guardar tarea")
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Guardar tarea"
+                            )
                             Text(
                                 text = "Guardar tarea",
                                 style = MaterialTheme.typography.labelLarge,
@@ -165,7 +170,7 @@ fun AddTaskForm(
                         viewModel.onEvent(AddTaskEvents.SetDescription(it))
                     }
                 }
-                DatePickerFieldToModal(value = states.dueDate){
+                DatePickerFieldToModal(value = states.dueDate) {
                     viewModel.onEvent(AddTaskEvents.SetDueDate(it))
                 }
                 Text(
@@ -216,7 +221,7 @@ fun AddTaskForm(
                 ) {
                     Button(
                         onClick = {
-                                  viewModel.onEvent(AddTaskEvents.SaveTask)
+                            viewModel.onEvent(AddTaskEvents.AddTask)
                         },
                         colors = ButtonDefaults.buttonColors(
                             contentColor = MaterialTheme.colorScheme.surface,

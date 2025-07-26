@@ -1,16 +1,35 @@
 package com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.pruebatecnicasupervisa.domain.model.Task
+import com.example.pruebatecnicasupervisa.domain.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class AddTaskViewModel @Inject constructor() : ViewModel() {
+class AddTaskViewModel @Inject constructor(
+    private val taskRepository: TaskRepository
+) : ViewModel() {
 
     val states = MutableStateFlow(AddTaskStates())
+
+    init {
+        viewModelScope.launch {
+            taskRepository.getTasks().collectLatest { list ->
+                states.update {
+                    it.copy(
+                        taskList = list
+                    )
+                }
+            }
+        }
+    }
 
     fun onEvent(events: AddTaskEvents) {
         when (events) {
@@ -33,7 +52,7 @@ class AddTaskViewModel @Inject constructor() : ViewModel() {
                 it.copy(state = events.state)
             }
 
-            AddTaskEvents.SaveTask -> {
+            AddTaskEvents.AddTask -> {
                 if (states.value.title.isBlank()) {
                     states.update {
                         it.copy(errorMessage = "El título es obligatorio")
@@ -55,7 +74,7 @@ class AddTaskViewModel @Inject constructor() : ViewModel() {
                 states.update {
                     it.copy(
                         taskList = it.taskList + Task(
-                            task_id = "",
+                            task_id = UUID.randomUUID().toString(),
                             title = it.title,
                             description = it.description,
                             due_Date = it.dueDate,
@@ -85,6 +104,12 @@ class AddTaskViewModel @Inject constructor() : ViewModel() {
                     it.copy(
                         taskList = it.taskList - events.task
                     )
+                }
+            }
+
+            is AddTaskEvents.SaveTask -> {
+                viewModelScope.launch {
+                    taskRepository.insertTask(events.task)
                 }
             }
         }
