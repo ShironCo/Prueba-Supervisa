@@ -1,6 +1,7 @@
 package com.example.pruebatecnicasupervisa.presentation.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PriorityHigh
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -23,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
@@ -123,7 +127,7 @@ fun AddTaskForm(
                 FilterChip(
                     label = it.label,
                     selectedContainerColor = it.selectedContainerColor,
-                    selectedLabelColor =  it.selectedLabelColor,
+                    selectedLabelColor = it.selectedLabelColor,
                     selected = it.label == states.priority?.label
                 ) {
                     viewModel.onEvent(AddTaskEvents.SetPriority(it))
@@ -144,11 +148,27 @@ fun AddTaskForm(
                 FilterChip(
                     label = it.label,
                     selectedContainerColor = it.selectedContainerColor,
-                    selectedLabelColor =  it.selectedLabelColor,
+                    selectedLabelColor = it.selectedLabelColor,
                     selected = it.label == states.state?.label
                 ) {
-                  viewModel.onEvent(AddTaskEvents.SetState(it))
+                    viewModel.onEvent(AddTaskEvents.SetState(it))
                 }
+            }
+        }
+        Box(modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.CenterEnd) {
+            Button(
+                onClick = { /*TODO*/ },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = MaterialTheme.colorScheme.surface,
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                shape = MaterialTheme.shapes.large
+            ) {
+                Text(
+                    text = "Crear tarea",
+                    style = MaterialTheme.typography.bodyLarge,
+                )
             }
         }
     }
