@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -41,6 +43,7 @@ import com.example.pruebatecnicasupervisa.data.model.Priority
 import com.example.pruebatecnicasupervisa.data.model.State
 import com.example.pruebatecnicasupervisa.presentation.ui.components.DatePickerFieldToModal
 import com.example.pruebatecnicasupervisa.presentation.ui.components.FilterChip
+import com.example.pruebatecnicasupervisa.presentation.ui.components.TaskCard
 import com.example.pruebatecnicasupervisa.presentation.ui.components.TopBar
 import com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel.AddTaskEvents
 import com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel.AddTaskViewModel
@@ -83,92 +86,102 @@ fun AddTaskForm(
     val states by viewModel.states.collectAsState()
     val listPriority = listOf(Priority.HIGH, Priority.MEDIUM, Priority.LOW)
     val listState = listOf(State.PENDING, State.IN_PROGRESS, State.COMPLETED)
-    Column(
-        modifier = Modifier.padding(horizontal = 20.dp)
-    ) {
-        Text(
-            modifier = Modifier.padding(vertical = 20.dp),
-            text = "Agregar tarea",
-            style = MaterialTheme.typography.titleMedium,
-            color = Color.Black
-        )
-        AddTaskTextField(
-            value = states.title,
-            placeHolderText = "Título*",
-            maxLengthTitle = 150,
-            showIconError = showTitleError
-        ) {
-            if (it.length <= 150) {
-                viewModel.onEvent(AddTaskEvents.SetTitle(it))
+
+    LazyColumn {
+        item {
+            TaskCard {
+
             }
         }
-        AddTaskTextField(
-            modifier = Modifier.height(200.dp),
-            value = states.description,
-            placeHolderText = "Descripción",
-            maxLengthTitle = 1000,
-        ) {
-            if (it.length <= 1000) {
-                viewModel.onEvent(AddTaskEvents.SetDescription(it))
-            }
-        }
-        DatePickerFieldToModal()
-        Text(
-            modifier = Modifier.padding(vertical = 10.dp),
-            text = "Prioridad*",
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            listPriority.forEach {
-                FilterChip(
-                    label = it.label,
-                    selectedContainerColor = it.selectedContainerColor,
-                    selectedLabelColor = it.selectedLabelColor,
-                    selected = it.label == states.priority?.label
-                ) {
-                    viewModel.onEvent(AddTaskEvents.SetPriority(it))
-                }
-            }
-        }
-        Text(
-            modifier = Modifier.padding(vertical = 10.dp),
-            text = "Estado*",
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            listState.forEach {
-                FilterChip(
-                    label = it.label,
-                    selectedContainerColor = it.selectedContainerColor,
-                    selectedLabelColor = it.selectedLabelColor,
-                    selected = it.label == states.state?.label
-                ) {
-                    viewModel.onEvent(AddTaskEvents.SetState(it))
-                }
-            }
-        }
-        Box(modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.CenterEnd) {
-            Button(
-                onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = MaterialTheme.colorScheme.surface,
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                shape = MaterialTheme.shapes.large
+        item {
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp)
             ) {
                 Text(
-                    text = "Crear tarea",
-                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    text = "Agregar tarea",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.Black
                 )
+                AddTaskTextField(
+                    value = states.title,
+                    placeHolderText = "Título*",
+                    maxLengthTitle = 150,
+                    showIconError = showTitleError
+                ) {
+                    if (it.length <= 150) {
+                        viewModel.onEvent(AddTaskEvents.SetTitle(it))
+                    }
+                }
+                AddTaskTextField(
+                    modifier = Modifier.height(200.dp),
+                    value = states.description,
+                    placeHolderText = "Descripción",
+                    maxLengthTitle = 1000,
+                ) {
+                    if (it.length <= 1000) {
+                        viewModel.onEvent(AddTaskEvents.SetDescription(it))
+                    }
+                }
+                DatePickerFieldToModal()
+                Text(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    text = "Prioridad*",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Black
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listPriority.forEach {
+                        FilterChip(
+                            label = it.label,
+                            selectedContainerColor = it.selectedContainerColor,
+                            selectedLabelColor = it.selectedLabelColor,
+                            selected = it.label == states.priority?.label
+                        ) {
+                            viewModel.onEvent(AddTaskEvents.SetPriority(it))
+                        }
+                    }
+                }
+                Text(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    text = "Estado*",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Black
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listState.forEach {
+                        FilterChip(
+                            label = it.label,
+                            selectedContainerColor = it.selectedContainerColor,
+                            selectedLabelColor = it.selectedLabelColor,
+                            selected = it.label == states.state?.label
+                        ) {
+                            viewModel.onEvent(AddTaskEvents.SetState(it))
+                        }
+                    }
+                }
+                Box(modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd) {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = MaterialTheme.colorScheme.surface,
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
+                        shape = MaterialTheme.shapes.large
+                    ) {
+                        Text(
+                            text = "Crear tarea",
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
             }
         }
     }
