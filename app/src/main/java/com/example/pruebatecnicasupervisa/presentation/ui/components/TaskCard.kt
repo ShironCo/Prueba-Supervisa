@@ -15,15 +15,18 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.pruebatecnicasupervisa.data.model.Priority
 import com.example.pruebatecnicasupervisa.data.model.State
 
 @Composable
 fun TaskCard(
+    title: String,
+    description: String?,
+    dueDate: Long?,
+    priority: Priority,
+    state: State,
     content: @Composable RowScope.() -> Unit
 ){
     Card(
@@ -41,14 +44,14 @@ fun TaskCard(
         ) {
             Text(
                 modifier = Modifier,
-                text = "HOLA COMO ESTAS*",
+                text = title,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondary
             )
 
             Text(
                 modifier = Modifier.padding(vertical = 5.dp),
-                text = "este es un texto de ayuda para entender la tarea*",
+                text = description ?: "",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSecondary
             )
@@ -63,24 +66,24 @@ fun TaskCard(
                 )
                 Text(
                     modifier = Modifier,
-                    text = "10/10/2003",
+                    text = dueDate?.let { convertMillisToDate(it) } ?: "",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSecondary
                 )
             }
             Row {
                 FilterChip(
-                    label = Priority.MEDIUM.label,
+                    label = priority.label,
                     selected = true,
-                    selectedLabelColor = Priority.MEDIUM.selectedLabelColor,
-                    selectedContainerColor = Priority.MEDIUM.selectedContainerColor
+                    selectedLabelColor = priority.selectedLabelColor,
+                    selectedContainerColor = priority.selectedContainerColor
                 ) {}
                 Spacer(modifier = Modifier.width(10.dp))
                 FilterChip(
-                    label = State.IN_PROGRESS.label,
+                    label = state.label,
                     selected = true,
-                    selectedLabelColor = State.IN_PROGRESS.selectedLabelColor,
-                    selectedContainerColor = State.IN_PROGRESS.selectedContainerColor
+                    selectedLabelColor = state.selectedLabelColor,
+                    selectedContainerColor = state.selectedContainerColor
                 ) {}
             }
             Spacer(modifier = Modifier.height(5.dp))

@@ -1,5 +1,6 @@
 package com.example.pruebatecnicasupervisa.presentation.screen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -30,6 +33,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -92,25 +96,39 @@ fun AddTaskForm(
     val states by viewModel.states.collectAsState()
     val listPriority = listOf(Priority.HIGH, Priority.MEDIUM, Priority.LOW)
     val listState = listOf(State.PENDING, State.IN_PROGRESS, State.COMPLETED)
+    val pagerState = rememberPagerState { states.taskList.size }
 
     LazyColumn {
         item {
-            TaskCard {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Borrar tarea")
-                }
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Guardar tarea")
-                    Text(
-                        text = "Guardar tarea",
-                        style = MaterialTheme.typography.labelLarge,
-                    )
+            AnimatedVisibility(visible = states.taskList.isNotEmpty()) {
+                HorizontalPager(state = pagerState) { index ->
+                    TaskCard(
+                        title = states.taskList[index].title,
+                        description = states.taskList[index].description,
+                        dueDate = states.taskList[index].dueDate,
+                        priority = states.taskList[index].priority,
+                        state = states.taskList[index].state
+                    ) {
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Borrar tarea"
+                            )
+                        }
+                        Button(
+                            onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.surface
+                            )
+                        ) {
+                            Icon(imageVector = Icons.Default.Add, contentDescription = "Guardar tarea")
+                            Text(
+                                text = "Guardar tarea",
+                                style = MaterialTheme.typography.labelLarge,
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -139,12 +157,15 @@ fun AddTaskForm(
                     value = states.description,
                     placeHolderText = "Descripción",
                     maxLengthTitle = 1000,
+                    imeAction = ImeAction.Default
                 ) {
                     if (it.length <= 1000) {
                         viewModel.onEvent(AddTaskEvents.SetDescription(it))
                     }
                 }
-                DatePickerFieldToModal()
+                DatePickerFieldToModal{
+                    viewModel.onEvent(AddTaskEvents.SetDueDate(it))
+                }
                 Text(
                     modifier = Modifier.padding(vertical = 10.dp),
                     text = "Prioridad*",

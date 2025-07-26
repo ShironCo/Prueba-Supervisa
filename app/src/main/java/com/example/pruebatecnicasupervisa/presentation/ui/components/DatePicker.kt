@@ -30,9 +30,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 @Composable
-fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
+fun DatePickerFieldToModal(
+    modifier: Modifier = Modifier,
+    onClick : (Long?) -> Unit
+
+    ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
 
@@ -68,7 +73,8 @@ fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
 
     if (showModal) {
         DatePickerModal(
-            onDateSelected = { selectedDate = it },
+            onDateSelected = { selectedDate = it
+                onClick(it) },
             onDismiss = { showModal = false }
         )
     }
@@ -92,7 +98,9 @@ fun DatePickerModal(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = {
-                onDateSelected(datePickerState.selectedDateMillis)
+                val selectedMillis = datePickerState.selectedDateMillis
+                val correctedMillis = selectedMillis?.plus(24 * 60 * 60 * 1000) // Sumar un día
+                onDateSelected(correctedMillis)
                 onDismiss()
             }) {
                 Text("OK")

@@ -5,7 +5,7 @@ import java.time.LocalDate
 data class Task(
     val title: String,
     val description: String? = null,
-    val dueDate: LocalDate? = null,
+    val dueDate: Long? = null,
     val priority : Priority,
     val state: State
 )
