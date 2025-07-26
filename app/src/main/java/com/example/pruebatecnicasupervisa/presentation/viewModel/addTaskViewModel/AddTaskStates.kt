@@ -1,8 +1,8 @@
 package com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel
 
-import com.example.pruebatecnicasupervisa.data.model.Priority
-import com.example.pruebatecnicasupervisa.data.model.State
-import com.example.pruebatecnicasupervisa.data.model.Task
+import com.example.pruebatecnicasupervisa.domain.model.Priority
+import com.example.pruebatecnicasupervisa.domain.model.State
+import com.example.pruebatecnicasupervisa.domain.model.Task
 
 data class AddTaskStates(
     val title:String = "",

@@ -1,7 +1,7 @@
 package com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.pruebatecnicasupervisa.data.model.Task
+import com.example.pruebatecnicasupervisa.domain.model.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -55,11 +55,12 @@ class AddTaskViewModel @Inject constructor() : ViewModel() {
                 states.update {
                     it.copy(
                         taskList = it.taskList + Task(
+                            task_id = "",
                             title = it.title,
                             description = it.description,
-                            dueDate = it.dueDate,
+                            due_Date = it.dueDate,
                             priority = it.priority!!,
-                            state = it.state!!
+                            status = it.state!!
                         ),
                         title = "",
                         description = "",

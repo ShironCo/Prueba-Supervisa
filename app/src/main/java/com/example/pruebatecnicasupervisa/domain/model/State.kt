@@ -1,4 +1,4 @@
-package com.example.pruebatecnicasupervisa.data.model
+package com.example.pruebatecnicasupervisa.domain.model
 
 import androidx.compose.ui.graphics.Color
 

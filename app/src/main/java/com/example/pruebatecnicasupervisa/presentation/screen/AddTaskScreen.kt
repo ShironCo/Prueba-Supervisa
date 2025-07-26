@@ -4,15 +4,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardActions
@@ -20,7 +17,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.PriorityHigh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -49,8 +45,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.pruebatecnicasupervisa.data.model.Priority
-import com.example.pruebatecnicasupervisa.data.model.State
+import com.example.pruebatecnicasupervisa.domain.model.Priority
+import com.example.pruebatecnicasupervisa.domain.model.State
 import com.example.pruebatecnicasupervisa.presentation.ui.components.DatePickerFieldToModal
 import com.example.pruebatecnicasupervisa.presentation.ui.components.FilterChip
 import com.example.pruebatecnicasupervisa.presentation.ui.components.TaskCard
@@ -109,9 +105,9 @@ fun AddTaskForm(
                     TaskCard(
                         title = states.taskList[index].title,
                         description = states.taskList[index].description,
-                        dueDate = states.taskList[index].dueDate,
+                        dueDate = states.taskList[index].due_Date,
                         priority = states.taskList[index].priority,
-                        state = states.taskList[index].state
+                        state = states.taskList[index].status
                     ) {
                         IconButton(onClick = {
                             viewModel.onEvent(AddTaskEvents.DeleteTask(states.taskList[index]))
