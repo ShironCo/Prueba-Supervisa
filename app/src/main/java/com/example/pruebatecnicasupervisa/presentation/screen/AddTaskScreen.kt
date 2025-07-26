@@ -3,20 +3,26 @@ package com.example.pruebatecnicasupervisa.presentation.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.PriorityHigh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -90,7 +96,22 @@ fun AddTaskForm(
     LazyColumn {
         item {
             TaskCard {
-
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Borrar tarea")
+                }
+                Button(
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.surface
+                    )
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Guardar tarea")
+                    Text(
+                        text = "Guardar tarea",
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
             }
         }
         item {
@@ -166,8 +187,10 @@ fun AddTaskForm(
                         }
                     }
                 }
-                Box(modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
                     Button(
                         onClick = { /*TODO*/ },
                         colors = ButtonDefaults.buttonColors(
@@ -178,7 +201,7 @@ fun AddTaskForm(
                     ) {
                         Text(
                             text = "Crear tarea",
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.labelLarge,
                         )
                     }
                 }
