@@ -1,5 +1,6 @@
 package com.example.pruebatecnicasupervisa.presentation.ui.navigation
 
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,21 +14,31 @@ import com.example.pruebatecnicasupervisa.presentation.screen.AddTaskScreen
 import com.example.pruebatecnicasupervisa.presentation.screen.TaskScreen
 
 @Composable
-fun Navigation (){
+fun Navigation() {
     val navHostController = rememberNavController()
     NavHost(navController = navHostController,
         startDestination = NavigationRoutes.TaskScreen.route,
         enterTransition = { fadeIn(animationSpec = tween(300)) },
         exitTransition = { fadeOut(animationSpec = tween(300)) }
-        ){
-        composable(route = NavigationRoutes.TaskScreen.route){
+    ) {
+        composable(route = NavigationRoutes.TaskScreen.route) {
             TaskScreen(navHostController)
         }
         composable(
             route = NavigationRoutes.AddTaskScreen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 })},
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 })}
-            ){
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth / 2 },
+                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                ) 
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth / 2 },
+                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                )
+            }
+        ) {
             AddTaskScreen(navHostController)
         }
     }
