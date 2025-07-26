@@ -31,7 +31,8 @@ fun TaskScreen(
                 onClick = {
                     navigationHostController.navigate(NavigationRoutes.AddTaskScreen.route)
                 },
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.surface
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Agregar Tarea")
             }

@@ -111,7 +111,7 @@ fun AddTaskForm(
         DatePickerFieldToModal()
         Text(
             modifier = Modifier.padding(vertical = 10.dp),
-            text = "Prioridad",
+            text = "Prioridad*",
             style = MaterialTheme.typography.bodyLarge,
             color = Color.Black
         )
@@ -121,17 +121,18 @@ fun AddTaskForm(
         ) {
             listPriority.forEach {
                 FilterChip(
-                    title = it.label,
+                    label = it.label,
                     selectedContainerColor = it.selectedContainerColor,
-                    selectedLabelColor =  it.selectedLabelColor
+                    selectedLabelColor =  it.selectedLabelColor,
+                    selected = it.label == states.priority?.label
                 ) {
-
+                    viewModel.onEvent(AddTaskEvents.SetPriority(it))
                 }
             }
         }
         Text(
             modifier = Modifier.padding(vertical = 10.dp),
-            text = "Estado",
+            text = "Estado*",
             style = MaterialTheme.typography.bodyLarge,
             color = Color.Black
         )
@@ -141,11 +142,12 @@ fun AddTaskForm(
         ) {
             listState.forEach {
                 FilterChip(
-                    title = it.label,
+                    label = it.label,
                     selectedContainerColor = it.selectedContainerColor,
-                    selectedLabelColor =  it.selectedLabelColor
+                    selectedLabelColor =  it.selectedLabelColor,
+                    selected = it.label == states.state?.label
                 ) {
-
+                  viewModel.onEvent(AddTaskEvents.SetState(it))
                 }
             }
         }

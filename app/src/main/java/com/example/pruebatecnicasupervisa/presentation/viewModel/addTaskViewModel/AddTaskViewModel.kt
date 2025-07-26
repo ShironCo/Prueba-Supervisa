@@ -22,6 +22,14 @@ class AddTaskViewModel @Inject constructor(): ViewModel(){
                 states.update {
                 it.copy(title = events.title)
             }
+
+            is AddTaskEvents.SetPriority ->  states.update {
+                it.copy(priority = events.priority)
+            }
+
+            is AddTaskEvents.SetState -> states.update {
+                it.copy(state = events.state)
+            }
         }
     }
     

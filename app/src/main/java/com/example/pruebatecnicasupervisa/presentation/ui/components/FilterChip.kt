@@ -14,16 +14,16 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun FilterChip(
-    title: String,
+    label: String,
     selected : Boolean = false,
     selectedContainerColor: Color = Color.Transparent,
     selectedLabelColor: Color = Color.Transparent,
-    onClick : (String) -> Unit
+    onClick : () -> Unit
 ) {
     FilterChip(
-        onClick = { onClick(title) },
+        onClick = { onClick() },
         label = {
-            Text(title)
+            Text(label)
         },
         selected = selected,
         colors = FilterChipDefaults.filterChipColors(
