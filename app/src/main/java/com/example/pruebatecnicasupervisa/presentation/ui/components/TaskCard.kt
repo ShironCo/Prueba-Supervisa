@@ -55,21 +55,23 @@ fun TaskCard(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSecondary
             )
-            Column(
-                modifier = Modifier.padding(vertical = 10.dp)
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = "Fecha de vencimiento",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.8f)
-                )
-                Text(
-                    modifier = Modifier,
-                    text = dueDate?.let { convertMillisToDate(it) } ?: "",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSecondary
-                )
+            dueDate?.let {
+                Column(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "Fecha de vencimiento",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.8f)
+                    )
+                    Text(
+                        modifier = Modifier,
+                        text = convertMillisToDate(it),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
+                }
             }
             Row {
                 FilterChip(

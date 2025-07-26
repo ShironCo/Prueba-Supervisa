@@ -97,7 +97,11 @@ fun AddTaskForm(
     val listPriority = listOf(Priority.HIGH, Priority.MEDIUM, Priority.LOW)
     val listState = listOf(State.PENDING, State.IN_PROGRESS, State.COMPLETED)
     val pagerState = rememberPagerState { states.taskList.size }
-
+    LaunchedEffect(states.taskList.size) {
+        if (states.taskList.isNotEmpty()) {
+            pagerState.animateScrollToPage(states.taskList.lastIndex)
+        }
+    }
     LazyColumn {
         item {
             AnimatedVisibility(visible = states.taskList.isNotEmpty()) {
