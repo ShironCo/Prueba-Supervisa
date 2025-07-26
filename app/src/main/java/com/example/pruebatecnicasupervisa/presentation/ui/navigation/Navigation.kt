@@ -30,7 +30,7 @@ fun Navigation() {
                 slideInHorizontally(
                     initialOffsetX = { fullWidth -> fullWidth / 2 },
                     animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
-                ) 
+                )
             },
             exitTransition = {
                 slideOutHorizontally(

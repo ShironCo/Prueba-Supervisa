@@ -2,6 +2,7 @@ package com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewMod
 
 import com.example.pruebatecnicasupervisa.data.model.Priority
 import com.example.pruebatecnicasupervisa.data.model.State
+import com.example.pruebatecnicasupervisa.data.model.Task
 
 sealed interface AddTaskEvents {
     data class SetTitle(val title: String): AddTaskEvents
@@ -10,4 +11,5 @@ sealed interface AddTaskEvents {
     data class SetPriority(val priority: Priority): AddTaskEvents
     data class SetState(val state: State): AddTaskEvents
     data object SaveTask : AddTaskEvents
+    data class DeleteTask(val task: Task): AddTaskEvents
 }

@@ -113,7 +113,9 @@ fun AddTaskForm(
                         priority = states.taskList[index].priority,
                         state = states.taskList[index].state
                     ) {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+                            viewModel.onEvent(AddTaskEvents.DeleteTask(states.taskList[index]))
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Borrar tarea"

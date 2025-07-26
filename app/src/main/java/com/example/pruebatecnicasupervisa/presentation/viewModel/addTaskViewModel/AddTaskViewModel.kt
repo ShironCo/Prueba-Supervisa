@@ -78,7 +78,14 @@ class AddTaskViewModel @Inject constructor() : ViewModel() {
                     )
                 }
             }
+
+            is AddTaskEvents.DeleteTask -> {
+                states.update {
+                    it.copy(
+                        taskList = it.taskList - events.task
+                    )
+                }
+            }
         }
     }
-
 }
