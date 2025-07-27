@@ -1,6 +1,8 @@
 package com.example.pruebatecnicasupervisa.presentation.screen
 
+import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
@@ -35,6 +37,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -59,10 +64,12 @@ import com.example.pruebatecnicasupervisa.domain.model.State
 import com.example.pruebatecnicasupervisa.presentation.ui.components.TaskCard
 import com.example.pruebatecnicasupervisa.presentation.ui.components.TopBar
 import com.example.pruebatecnicasupervisa.presentation.ui.navigation.NavigationRoutes
+import com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel.AddTaskEvents
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskEvents
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskStates
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskViewModel
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskScreen(
@@ -75,6 +82,16 @@ fun TaskScreen(
     ) {
         viewModel.onEvent(TaskEvents.FilterTask)
     }
+
+    val snackBarHostState = remember { SnackbarHostState() }
+    LaunchedEffect(states.snackBarMessage) {
+        if (states.snackBarMessage.isNotBlank()) {
+            snackBarHostState.showSnackbar(states.snackBarMessage)
+                viewModel.onEvent(TaskEvents.ClearSnackBarMessage)
+        }
+    }
+
+
     AnimatedVisibility(visible = states.progressIndicatorMessage != null) {
         Dialog(onDismissRequest = {}) {
             Card(
@@ -134,10 +151,18 @@ fun TaskScreen(
                     }
                 )
             } else {
-                TopBar(title = "Tareas")
+                if (states.currentTaskEdit != null) {
+                    TopBar(title = "Editar tarea", showIcon = true) {
+                        viewModel.onEvent(TaskEvents.SetCurrentTaskEdit(null))
+                    }
+                } else {
+                    TopBar(title = "Tareas")
+                }
+
             }
         },
         floatingActionButton = {
+            if (states.currentTaskEdit == null)
             FloatingActionButton(
                 onClick = {
                     navigationHostController.navigate(NavigationRoutes.AddTaskScreen.route)
@@ -147,15 +172,33 @@ fun TaskScreen(
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Agregar Tarea")
             }
-        }
-    ) {
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState){
+                Snackbar(
+                    snackbarData = it,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.surface
+                )
+            }
+        },
+    ) { padding ->
         TaskBody(
-            modifier = Modifier.padding(it),
+            modifier = Modifier.padding(padding),
             states = states
         ) { event ->
             viewModel.onEvent(event)
         }
+        states.currentTaskEdit?.let {
+            AnimatedContent(targetState = it, label = "") { task ->
+                EditTaskScreen(
+                    modifier = Modifier.padding(padding),
+                    task
+                )
+            }
+        }
     }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -219,9 +262,7 @@ fun TaskBody(
                                         onClick(TaskEvents.AddTaskList(states.taskList[it]))
                                     }
                                 } else {
-                                    Toast
-                                        .makeText(context, "hola", Toast.LENGTH_LONG)
-                                        .show()
+                                    onClick(TaskEvents.SetCurrentTaskEdit(states.taskList[it]))
                                 }
                             },
                             onLongClick = {

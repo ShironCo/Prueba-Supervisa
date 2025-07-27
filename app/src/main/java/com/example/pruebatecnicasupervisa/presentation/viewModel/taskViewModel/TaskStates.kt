@@ -9,5 +9,7 @@ data class TaskStates(
     val filterPriority: Priority? = null,
     val filterStates: State? = null,
     val taskListSelected: Set<Task> = emptySet(),
-    val progressIndicatorMessage : String? = null
+    val progressIndicatorMessage : String? = null,
+    val currentTaskEdit: Task? = null,
+    val snackBarMessage: String = ""
 )

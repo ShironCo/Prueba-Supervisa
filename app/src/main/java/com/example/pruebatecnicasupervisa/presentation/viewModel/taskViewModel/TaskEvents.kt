@@ -3,6 +3,7 @@ package com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel
 import com.example.pruebatecnicasupervisa.domain.model.Priority
 import com.example.pruebatecnicasupervisa.domain.model.State
 import com.example.pruebatecnicasupervisa.domain.model.Task
+import com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel.AddTaskEvents
 
 sealed interface TaskEvents {
     data object FilterTask : TaskEvents
@@ -12,4 +13,6 @@ sealed interface TaskEvents {
     data class RemoveTaskList(val task: Task) : TaskEvents
     data object CleanTaskList : TaskEvents
     data object DeleteTasks: TaskEvents
+    data class SetCurrentTaskEdit(val task: Task?): TaskEvents
+    data object ClearSnackBarMessage: TaskEvents
 }

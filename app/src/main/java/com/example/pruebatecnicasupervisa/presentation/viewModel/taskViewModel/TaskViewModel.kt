@@ -117,6 +117,22 @@ class TaskViewModel @Inject constructor(
                     }
                 }
             }
+
+            is TaskEvents.SetCurrentTaskEdit -> {
+                states.update {
+                    it.copy(
+                        currentTaskEdit = events.task
+                    )
+                }
+            }
+
+            TaskEvents.ClearSnackBarMessage -> {
+                states.update {
+                    it.copy(
+                        snackBarMessage = ""
+                    )
+                }
+            }
         }
     }
 
