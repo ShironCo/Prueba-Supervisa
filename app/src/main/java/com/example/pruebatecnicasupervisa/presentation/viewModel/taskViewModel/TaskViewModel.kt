@@ -125,14 +125,6 @@ class TaskViewModel @Inject constructor(
                     )
                 }
             }
-
-            TaskEvents.ClearSnackBarMessage -> {
-                states.update {
-                    it.copy(
-                        snackBarMessage = ""
-                    )
-                }
-            }
         }
     }
 

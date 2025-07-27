@@ -11,12 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,12 +34,14 @@ import com.example.pruebatecnicasupervisa.presentation.ui.components.DatePickerF
 import com.example.pruebatecnicasupervisa.presentation.ui.components.FilterChip
 import com.example.pruebatecnicasupervisa.presentation.viewModel.editTaskViewModel.EditTaskEvents
 import com.example.pruebatecnicasupervisa.presentation.viewModel.editTaskViewModel.EditTaskViewModel
+import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskEvents
+import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskViewModel
 
 @Composable
 fun EditTaskScreen(
     modifier : Modifier,
     task: Task,
-    viewModel: EditTaskViewModel = hiltViewModel()
+    viewModel: EditTaskViewModel = hiltViewModel(),
 ) {
     val states by viewModel.states.collectAsState()
     val listPriority = listOf(Priority.HIGH, Priority.MEDIUM, Priority.LOW)
@@ -50,8 +56,17 @@ fun EditTaskScreen(
         viewModel.onEvent(EditTaskEvents.SetState(task.status))
     }
 
+    val snackBarHostState = remember { SnackbarHostState() }
+    LaunchedEffect(states.snackBarMessage) {
+        if (states.snackBarMessage.isNotBlank()) {
+            snackBarHostState.showSnackbar(states.snackBarMessage)
+            viewModel.onEvent(EditTaskEvents.ClearSnackBarMessage)
+        }
+    }
+
     Surface(
-        modifier = modifier.padding(top = 10.dp)
+        modifier = modifier
+            .padding(top = 10.dp)
             .fillMaxSize()
     ) {
         Column(
@@ -150,6 +165,18 @@ fun EditTaskScreen(
                         style = MaterialTheme.typography.labelLarge,
                     )
                 }
+            }
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            SnackbarHost(hostState = snackBarHostState){
+                Snackbar(
+                    snackbarData = it,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.surface
+                )
             }
         }
     }

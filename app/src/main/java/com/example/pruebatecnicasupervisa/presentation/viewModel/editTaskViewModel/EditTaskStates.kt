@@ -13,4 +13,5 @@ data class EditTaskStates(
     val status: State? = null,
     val taskList: List<Task> = emptyList(),
     val errorMessage: String = "",
+    val snackBarMessage: String = ""
 )

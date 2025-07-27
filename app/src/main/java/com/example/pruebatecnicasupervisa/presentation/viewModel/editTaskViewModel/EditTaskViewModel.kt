@@ -1,7 +1,6 @@
 package com.example.pruebatecnicasupervisa.presentation.viewModel.editTaskViewModel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pruebatecnicasupervisa.domain.model.Task
@@ -10,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 
@@ -23,6 +21,13 @@ class EditTaskViewModel @Inject constructor(
 
     fun onEvent(events: EditTaskEvents){
         when(events){
+            is EditTaskEvents.SetId -> {
+                states.update {
+                    it.copy(
+                        idTask = events.id
+                    )
+                }
+            }
             is EditTaskEvents.SetDescription -> {
                 states.update {
                     it.copy(description = events.description)
@@ -83,17 +88,23 @@ class EditTaskViewModel @Inject constructor(
                     )
                     Log.d("OBJETO", task.toString())
                     taskRepository.insertTask(task).onSuccess {
+                        states.update {
+                            it.copy(snackBarMessage = "Tarea editada")
+                        }
+                    }.onFailure { error ->
+                        states.update {
+                            it.copy(snackBarMessage = error.message.toString())
+                        }
                     }
                 }
             }
 
-            is EditTaskEvents.SetId -> {
+            EditTaskEvents.ClearSnackBarMessage ->
                 states.update {
                     it.copy(
-                        idTask = events.id
+                        snackBarMessage = ""
                     )
                 }
-            }
         }
         }
     }

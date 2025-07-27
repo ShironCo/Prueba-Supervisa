@@ -11,4 +11,5 @@ sealed interface EditTaskEvents {
     data class SetPriority(val priority: Priority): EditTaskEvents
     data class SetState(val state: State): EditTaskEvents
     data object SaveTask: EditTaskEvents
+    data object ClearSnackBarMessage: EditTaskEvents
 }

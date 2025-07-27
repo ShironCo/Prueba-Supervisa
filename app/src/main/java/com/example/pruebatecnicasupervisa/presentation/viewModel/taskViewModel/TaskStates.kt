@@ -11,5 +11,4 @@ data class TaskStates(
     val taskListSelected: Set<Task> = emptySet(),
     val progressIndicatorMessage : String? = null,
     val currentTaskEdit: Task? = null,
-    val snackBarMessage: String = ""
 )

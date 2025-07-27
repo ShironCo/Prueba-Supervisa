@@ -14,5 +14,4 @@ sealed interface TaskEvents {
     data object CleanTaskList : TaskEvents
     data object DeleteTasks: TaskEvents
     data class SetCurrentTaskEdit(val task: Task?): TaskEvents
-    data object ClearSnackBarMessage: TaskEvents
 }

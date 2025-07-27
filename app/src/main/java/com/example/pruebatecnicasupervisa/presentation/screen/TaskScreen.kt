@@ -83,13 +83,6 @@ fun TaskScreen(
         viewModel.onEvent(TaskEvents.FilterTask)
     }
 
-    val snackBarHostState = remember { SnackbarHostState() }
-    LaunchedEffect(states.snackBarMessage) {
-        if (states.snackBarMessage.isNotBlank()) {
-            snackBarHostState.showSnackbar(states.snackBarMessage)
-                viewModel.onEvent(TaskEvents.ClearSnackBarMessage)
-        }
-    }
 
 
     AnimatedVisibility(visible = states.progressIndicatorMessage != null) {
@@ -172,16 +165,7 @@ fun TaskScreen(
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Agregar Tarea")
             }
-        },
-        snackbarHost = {
-            SnackbarHost(hostState = snackBarHostState){
-                Snackbar(
-                    snackbarData = it,
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.surface
-                )
-            }
-        },
+        }
     ) { padding ->
         TaskBody(
             modifier = Modifier.padding(padding),
