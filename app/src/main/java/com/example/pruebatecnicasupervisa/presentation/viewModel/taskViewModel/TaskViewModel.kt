@@ -15,20 +15,58 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskViewModel @Inject constructor(
     private val taskRepository: TaskRepository
-): ViewModel() {
+) : ViewModel() {
     val states = MutableStateFlow(TaskStates())
 
     init {
         viewModelScope.launch {
             taskRepository.getTasks().onSuccess { flow ->
-                flow.collectLatest { task ->
+                flow.collectLatest { tasks ->
                     states.update {
                         it.copy(
-                            taskList = task
+                            taskList = tasks
                         )
                     }
                 }
 
+            }
+        }
+    }
+
+    fun onEvent(events: TaskEvents) {
+        when (events) {
+            is TaskEvents.FilterTask -> {
+                viewModelScope.launch {
+                    taskRepository.filterTasks(
+                        states.value.filterPriority,
+                        states.value.filterStates
+                    ).onSuccess { flow ->
+                        flow.collectLatest { tasks ->
+                            states.update {
+                                it.copy(
+                                    taskList = tasks
+                                )
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            is TaskEvents.SetFilterPriority -> {
+                states.update {
+                    it.copy(
+                        filterPriority = events.priority
+                    )
+                }
+            }
+
+            is TaskEvents.SetFilterState -> {
+                states.update {
+                    it.copy(
+                        filterStates = events.state
+                    )
+                }
             }
         }
     }

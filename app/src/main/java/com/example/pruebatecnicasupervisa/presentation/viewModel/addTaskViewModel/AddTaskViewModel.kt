@@ -96,20 +96,16 @@ class AddTaskViewModel @Inject constructor(
             }
 
             is AddTaskEvents.SaveTask -> {
-                states.update {
-                    it.copy(
-                        snackBarMessage = "Tarea agendada"
-                    )
+                viewModelScope.launch {
+                    taskRepository.insertTask(events.task).onSuccess {
+                        states.update {
+                            it.copy(
+                                taskList = it.taskList - events.task,
+                                snackBarMessage = "Tarea agendada"
+                            )
+                        }
+                    }
                 }
-//                viewModelScope.launch {
-//                    taskRepository.insertTask(events.task).onSuccess {
-//                        states.update {
-//                            it.copy(
-//                                taskList = it.taskList - events.task
-//                            )
-//                        }
-//                    }
-//                }
             }
 
             AddTaskEvents.ClearSnackBarMessage -> {

@@ -3,6 +3,8 @@ package com.example.pruebatecnicasupervisa.data.local.repository
 import com.example.pruebatecnicasupervisa.data.local.dao.TaskDao
 import com.example.pruebatecnicasupervisa.data.mapper.toDomain
 import com.example.pruebatecnicasupervisa.data.mapper.toEntity
+import com.example.pruebatecnicasupervisa.domain.model.Priority
+import com.example.pruebatecnicasupervisa.domain.model.State
 import com.example.pruebatecnicasupervisa.domain.model.Task
 import com.example.pruebatecnicasupervisa.domain.repository.TaskRepository
 import kotlinx.coroutines.flow.Flow
@@ -31,5 +33,17 @@ class TaskRepositoryImpl(
 
     override suspend fun deleteTask(task: Task) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun filterTasks(priority: Priority?, state: State?): Result<Flow<List<Task>>> {
+        return try{
+            val entities = taskDao.filterTasks(
+                priority = priority,
+                status = state
+            )
+            Result.success(entities.map { list -> list.map{it.toDomain()}})
+        }catch (e: Exception){
+            Result.failure(e)
+        }
     }
 }

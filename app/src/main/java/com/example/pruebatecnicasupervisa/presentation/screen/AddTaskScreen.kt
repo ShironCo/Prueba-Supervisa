@@ -129,7 +129,8 @@ fun AddTaskForm(
                         description = states.taskList[index].description,
                         dueDate = states.taskList[index].due_Date,
                         priority = states.taskList[index].priority,
-                        state = states.taskList[index].status
+                        state = states.taskList[index].status,
+                        maxLines = 4
                     ) {
                         IconButton(onClick = {
                             viewModel.onEvent(AddTaskEvents.DeleteTask(states.taskList[index]))
