@@ -97,7 +97,13 @@ class AddTaskViewModel @Inject constructor(
 
             is AddTaskEvents.SaveTask -> {
                 viewModelScope.launch {
-                    taskRepository.insertTask(events.task)
+                    taskRepository.insertTask(events.task).onSuccess {
+                        states.update {
+                            it.copy(
+                                taskList = it.taskList - events.task
+                            )
+                        }
+                    }
                 }
             }
         }

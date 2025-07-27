@@ -4,7 +4,7 @@ import com.example.pruebatecnicasupervisa.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
-    suspend fun getTasks(): Flow<List<Task>>
-    suspend fun insertTask(task: Task)
+    suspend fun getTasks(): Result<Flow<List<Task>>>
+    suspend fun insertTask(task: Task) : Result<Unit>
     suspend fun deleteTask(task: Task)
 }

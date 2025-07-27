@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.pruebatecnicasupervisa.domain.model.Priority
 import com.example.pruebatecnicasupervisa.domain.model.State
@@ -26,6 +27,7 @@ fun TaskCard(
     dueDate: Long?,
     priority: Priority,
     state: State,
+    maxLines: Int = Int.MAX_VALUE,
     content: @Composable RowScope.() -> Unit
 ){
     Card(
@@ -52,7 +54,9 @@ fun TaskCard(
                 modifier = Modifier.padding(vertical = 5.dp),
                 text = description ?: "",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondary
+                color = MaterialTheme.colorScheme.onSecondary,
+                maxLines = maxLines,
+                overflow = if (maxLines>0) TextOverflow.Ellipsis else TextOverflow.Clip
             )
             dueDate?.let {
                 Column(

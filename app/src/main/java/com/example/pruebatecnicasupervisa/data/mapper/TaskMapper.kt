@@ -3,7 +3,7 @@ package com.example.pruebatecnicasupervisa.data.mapper
 import com.example.pruebatecnicasupervisa.data.local.model.TaskEntity
 import com.example.pruebatecnicasupervisa.domain.model.Task
 
-// De Entity (Room) a Domain
+// De Entity a Domain
 fun TaskEntity.toDomain(): Task {
     return Task(
         task_id = task_id,
