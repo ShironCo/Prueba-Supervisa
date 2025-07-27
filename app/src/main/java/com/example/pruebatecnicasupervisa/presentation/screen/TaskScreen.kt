@@ -1,31 +1,36 @@
 package com.example.pruebatecnicasupervisa.presentation.screen
 
-import androidx.compose.animation.AnimatedContent
+import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,6 +39,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -46,12 +53,12 @@ import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.T
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskStates
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskScreen(
     navigationHostController: NavHostController,
     viewModel: TaskViewModel = hiltViewModel()
 ) {
-
     val states by viewModel.states.collectAsState()
     LaunchedEffect(
         states.filterStates, states.filterPriority
@@ -60,8 +67,30 @@ fun TaskScreen(
     }
     Scaffold(
         topBar = {
-            TopBar(title = "Tareas", showIcon = false) {
-
+            if (states.taskListSelected.isNotEmpty()) {
+                TopAppBar(title = {
+                    Text(
+                        text = states.taskListSelected.size.toString(),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }, navigationIcon = {
+                    IconButton(onClick = {
+                        viewModel.onEvent(TaskEvents.CleanTaskList)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Volver a la pantalla principal"
+                        )
+                    }
+                },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.surface,
+                        navigationIconContentColor = MaterialTheme.colorScheme.surface
+                    )
+                )
+            } else {
+                TopBar(title = "Tareas")
             }
         },
         floatingActionButton = {
@@ -85,6 +114,7 @@ fun TaskScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskBody(
     modifier: Modifier,
@@ -111,7 +141,6 @@ fun TaskBody(
                                 else Priority.entries.find { it.label == selectedLabel }
                             onClick(TaskEvents.SetFilterPriority(selectedPriority))
                         }
-
                     }
                     item {
                         DropBoxFilter(
@@ -127,11 +156,40 @@ fun TaskBody(
                             onClick(TaskEvents.SetFilterState(selectedState))
                         }
                     }
-                    item { }
+                    item {}
                 }
             }
             items(states.taskList.size) {
+                val context = LocalContext.current
                 TaskCard(
+                    modifier = Modifier
+                        .combinedClickable(
+                            indication = LocalIndication.current,
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = {
+                                if (states.taskListSelected.isNotEmpty()
+                                ) {
+                                    if (states.taskListSelected.contains(states.taskList[it])) {
+                                        onClick(TaskEvents.RemoveTaskList(states.taskList[it]))
+                                    } else {
+                                        onClick(TaskEvents.AddTaskList(states.taskList[it]))
+                                    }
+                                } else {
+                                    Toast
+                                        .makeText(context, "hola", Toast.LENGTH_LONG)
+                                        .show()
+                                }
+                            },
+                            onLongClick = {
+                                onClick(TaskEvents.AddTaskList(states.taskList[it]))
+                            }
+                        )
+                        .background(
+                            if (states.taskListSelected.contains(states.taskList[it]))
+                                MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.2f
+                                ) else Color.Transparent
+                        ),
                     title = states.taskList[it].title,
                     description = states.taskList[it].description,
                     dueDate = states.taskList[it].due_Date,

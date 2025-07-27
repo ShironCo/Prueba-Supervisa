@@ -17,8 +17,8 @@ import androidx.compose.runtime.Composable
 @Composable
 fun TopBar(
     title: String,
-    showIcon: Boolean,
-    onClick: () -> Unit
+    showIcon: Boolean = false,
+    onClick: () -> Unit = {}
 ){
     TopAppBar(title = {
         Text(

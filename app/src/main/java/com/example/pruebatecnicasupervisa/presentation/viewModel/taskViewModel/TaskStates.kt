@@ -7,5 +7,6 @@ import com.example.pruebatecnicasupervisa.domain.model.Task
 data class TaskStates(
     val taskList: List<Task> = emptyList(),
     val filterPriority: Priority? = null,
-    val filterStates: State? = null
+    val filterStates: State? = null,
+    val taskListSelected: Set<Task> = emptySet(),
 )

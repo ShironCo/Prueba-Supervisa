@@ -68,6 +68,29 @@ class TaskViewModel @Inject constructor(
                     )
                 }
             }
+
+            is TaskEvents.AddTaskList -> {
+                states.update {
+                    it.copy(
+                        taskListSelected = it.taskListSelected + events.task
+                    )
+                }
+            }
+
+            TaskEvents.CleanTaskList -> {
+                states.update {
+                    it.copy(
+                        taskListSelected = emptySet()
+                    )
+                }
+            }
+            is TaskEvents.RemoveTaskList -> {
+                states.update {
+                    it.copy(
+                        taskListSelected = it.taskListSelected - events.task
+                    )
+                }
+            }
         }
     }
 

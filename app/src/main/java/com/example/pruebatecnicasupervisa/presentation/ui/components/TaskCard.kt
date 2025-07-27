@@ -22,6 +22,7 @@ import com.example.pruebatecnicasupervisa.domain.model.State
 
 @Composable
 fun TaskCard(
+    modifier : Modifier = Modifier,
     title: String,
     description: String?,
     dueDate: Long?,
@@ -41,7 +42,7 @@ fun TaskCard(
         )
     ) {
         Column(
-            modifier = Modifier.padding(15.dp)
+            modifier = modifier.padding(15.dp)
         ) {
             Text(
                 modifier = Modifier,
