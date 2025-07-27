@@ -81,6 +81,7 @@ fun TaskCard(
                 FilterChip(
                     label = priority.label,
                     selected = true,
+                    enable = false,
                     selectedLabelColor = priority.selectedLabelColor,
                     selectedContainerColor = priority.selectedContainerColor
                 ) {}
@@ -88,6 +89,7 @@ fun TaskCard(
                 FilterChip(
                     label = state.label,
                     selected = true,
+                    enable = false,
                     selectedLabelColor = state.selectedLabelColor,
                     selectedContainerColor = state.selectedContainerColor
                 ) {}

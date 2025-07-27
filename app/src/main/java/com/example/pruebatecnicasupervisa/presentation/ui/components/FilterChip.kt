@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 fun FilterChip(
     label: String,
     selected : Boolean = false,
+    enable : Boolean = true,
     selectedContainerColor: Color = Color.Transparent,
     selectedLabelColor: Color = Color.Transparent,
     onClick : () -> Unit
@@ -26,10 +27,13 @@ fun FilterChip(
             Text(label)
         },
         selected = selected,
+        enabled = enable,
         colors = FilterChipDefaults.filterChipColors(
             labelColor = Color.Black,
             selectedContainerColor = selectedContainerColor,
-            selectedLabelColor = selectedLabelColor
+            selectedLabelColor = selectedLabelColor,
+            disabledSelectedContainerColor = selectedContainerColor,
+            disabledLabelColor = selectedLabelColor,
         )
     )
 }

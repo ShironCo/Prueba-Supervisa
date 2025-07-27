@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -87,7 +88,18 @@ fun TaskScreen(
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = MaterialTheme.colorScheme.surface,
                         navigationIconContentColor = MaterialTheme.colorScheme.surface
-                    )
+                    ),
+                    actions = {
+                        IconButton(onClick = {
+
+                        }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.surface
+                            )
+                        }
+                    }
                 )
             } else {
                 TopBar(title = "Tareas")

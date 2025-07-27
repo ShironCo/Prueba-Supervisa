@@ -1,6 +1,7 @@
 package com.example.pruebatecnicasupervisa.di
 
 import android.app.Application
+import android.os.Vibrator
 import androidx.room.Database
 import androidx.room.Room
 import com.example.pruebatecnicasupervisa.data.local.dao.TaskDao
@@ -33,5 +34,11 @@ object AppModule {
         taskDao: TaskDao
     ): TaskRepository{
         return TaskRepositoryImpl(taskDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideVibrator(context: Application): Vibrator{
+        return context.getSystemService(Vibrator::class.java) as Vibrator
     }
 }

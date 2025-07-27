@@ -4,6 +4,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pruebatecnicasupervisa.domain.repository.TaskRepository
+import com.example.pruebatecnicasupervisa.domain.useCases.Vibrator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val taskRepository: TaskRepository,
+    private val vibrator: Vibrator
 ) : ViewModel() {
     val states = MutableStateFlow(TaskStates())
 
@@ -70,6 +72,7 @@ class TaskViewModel @Inject constructor(
             }
 
             is TaskEvents.AddTaskList -> {
+                vibrator.invoke()
                 states.update {
                     it.copy(
                         taskListSelected = it.taskListSelected + events.task
