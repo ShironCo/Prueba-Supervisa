@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PriorityHigh
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -32,8 +34,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -88,7 +88,6 @@ fun AddTaskBody(
 fun AddTaskForm(
     viewModel: AddTaskViewModel
 ) {
-    val showTitleError by remember { mutableStateOf(false) }
     val states by viewModel.states.collectAsState()
     val listPriority = listOf(Priority.HIGH, Priority.MEDIUM, Priority.LOW)
     val listState = listOf(State.PENDING, State.IN_PROGRESS, State.COMPLETED)
@@ -153,7 +152,9 @@ fun AddTaskForm(
                     value = states.title,
                     placeHolderText = "Título*",
                     maxLengthTitle = 150,
-                    showIconError = showTitleError
+                    showIconError = states.errorMessage == "El título es obligatorio",
+                    isError = states.errorMessage == "title",
+                    errorMessage = "El título es obligatorio"
                 ) {
                     if (it.length <= 150) {
                         viewModel.onEvent(AddTaskEvents.SetTitle(it))
@@ -194,6 +195,9 @@ fun AddTaskForm(
                         }
                     }
                 }
+                if (states.errorMessage == "priority") {
+                    ValidateForm(text = "Selecciona una prioridad")
+                }
                 Text(
                     modifier = Modifier.padding(vertical = 10.dp),
                     text = "Estado*",
@@ -209,11 +213,14 @@ fun AddTaskForm(
                             label = it.label,
                             selectedContainerColor = it.selectedContainerColor,
                             selectedLabelColor = it.selectedLabelColor,
-                            selected = it.label == states.state?.label
+                            selected = it.label == states.status?.label
                         ) {
                             viewModel.onEvent(AddTaskEvents.SetState(it))
                         }
                     }
+                }
+                if (states.errorMessage == "status") {
+                    ValidateForm(text = "Selecciona el estado inicial")
                 }
                 Box(
                     modifier = Modifier.fillMaxWidth(),
@@ -241,11 +248,33 @@ fun AddTaskForm(
 }
 
 @Composable
+fun ValidateForm(
+    text: String
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.size(12.dp),
+            imageVector = Icons.Default.Warning,
+            contentDescription = text,
+            tint = MaterialTheme.colorScheme.error
+        )
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.error
+        )
+    }
+}
+
+@Composable
 fun AddTaskTextField(
     modifier: Modifier = Modifier,
     value: String,
     showIconError: Boolean = false,
     placeHolderText: String,
+    errorMessage: String = "",
     isError: Boolean = false,
     singleLine: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -294,17 +323,25 @@ fun AddTaskTextField(
             singleLine = singleLine,
             isError = isError
         )
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "${value.length}/ $maxLengthTitle",
-            style = MaterialTheme.typography.labelLarge,
-            color = if (value.length == maxLengthTitle) {
-                MaterialTheme.colorScheme.error
-            } else {
-                MaterialTheme.colorScheme.outlineVariant
-            },
-            textAlign = TextAlign.Right
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (isError){
+                ValidateForm(text = errorMessage)
+            }
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "${value.length}/ $maxLengthTitle",
+                style = MaterialTheme.typography.labelLarge,
+                color = if (value.length == maxLengthTitle) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    MaterialTheme.colorScheme.outlineVariant
+                },
+                textAlign = TextAlign.Right
+            )
+        }
+
     }
 }
 

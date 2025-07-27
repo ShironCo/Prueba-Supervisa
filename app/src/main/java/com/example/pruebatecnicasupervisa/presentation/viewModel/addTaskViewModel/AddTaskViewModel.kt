@@ -19,18 +19,6 @@ class AddTaskViewModel @Inject constructor(
 
     val states = MutableStateFlow(AddTaskStates())
 
-    init {
-        viewModelScope.launch {
-            taskRepository.getTasks().collectLatest { list ->
-                states.update {
-                    it.copy(
-                        taskList = list
-                    )
-                }
-            }
-        }
-    }
-
     fun onEvent(events: AddTaskEvents) {
         when (events) {
             is AddTaskEvents.SetDescription -> {
@@ -49,25 +37,25 @@ class AddTaskViewModel @Inject constructor(
             }
 
             is AddTaskEvents.SetState -> states.update {
-                it.copy(state = events.state)
+                it.copy(status = events.state)
             }
 
             AddTaskEvents.AddTask -> {
                 if (states.value.title.isBlank()) {
                     states.update {
-                        it.copy(errorMessage = "El título es obligatorio")
+                        it.copy(errorMessage = "title")
                     }
                     return
                 }
                 if (states.value.priority == null) {
                     states.update {
-                        it.copy(errorMessage = "La prioridad es obligatoria")
+                        it.copy(errorMessage = "priority")
                     }
                     return
                 }
-                if (states.value.state == null) {
+                if (states.value.status == null) {
                     states.update {
-                        it.copy(errorMessage = "El estado es obligatorio")
+                        it.copy(errorMessage = "status")
                     }
                     return
                 }
@@ -79,13 +67,13 @@ class AddTaskViewModel @Inject constructor(
                             description = it.description,
                             due_Date = it.dueDate,
                             priority = it.priority!!,
-                            status = it.state!!
+                            status = it.status!!
                         ),
                         title = "",
                         description = "",
                         dueDate = null,
                         priority = null,
-                        state = null,
+                        status = null,
                         errorMessage = ""
                     )
                 }

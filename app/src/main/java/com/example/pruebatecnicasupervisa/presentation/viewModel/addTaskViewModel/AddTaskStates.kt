@@ -9,7 +9,7 @@ data class AddTaskStates(
     val description: String = "",
     val dueDate: Long? = null,
     val priority: Priority? = null,
-    val state: State? = null,
+    val status: State? = null,
     val taskList: List<Task> = emptyList(),
     val errorMessage: String = ""
 )
