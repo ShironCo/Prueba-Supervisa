@@ -14,4 +14,5 @@ sealed interface AddTaskEvents {
     data class DeleteTask(val task: Task): AddTaskEvents
     data object AddTask : AddTaskEvents
     data class SaveTask(val task: Task) : AddTaskEvents
+    data object ClearSnackBarMessage: AddTaskEvents
 }

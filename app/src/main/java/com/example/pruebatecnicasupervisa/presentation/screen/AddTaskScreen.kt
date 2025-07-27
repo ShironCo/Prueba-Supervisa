@@ -28,12 +28,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -59,15 +64,33 @@ fun AddTaskScreen(
     navHostController: NavHostController,
     viewModel: AddTaskViewModel = hiltViewModel()
 ) {
+    val states by viewModel.states.collectAsState()
+    val snackBarHostState = remember { SnackbarHostState() }
+    LaunchedEffect(states.snackBarMessage) {
+        if (states.snackBarMessage.isNotBlank()) {
+            snackBarHostState.showSnackbar(states.snackBarMessage)
+            viewModel.onEvent(AddTaskEvents.ClearSnackBarMessage)
+        }
+    }
     Scaffold(
         topBar = {
             TopBar(title = "Nueva tarea", showIcon = true) {
                 navHostController.popBackStack()
             }
-        }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState){
+                Snackbar(
+                    snackbarData = it,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
+            }
+        },
     ) {
         AddTaskBody(modifier = Modifier.padding(it), viewModel = viewModel)
     }
+
 }
 
 @Composable

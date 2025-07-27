@@ -11,5 +11,6 @@ data class AddTaskStates(
     val priority: Priority? = null,
     val status: State? = null,
     val taskList: List<Task> = emptyList(),
-    val errorMessage: String = ""
+    val errorMessage: String = "",
+    val snackBarMessage: String = ""
 )
