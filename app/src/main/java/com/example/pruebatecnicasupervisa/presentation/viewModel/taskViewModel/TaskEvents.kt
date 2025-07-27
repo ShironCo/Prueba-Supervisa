@@ -11,4 +11,5 @@ sealed interface TaskEvents {
     data class AddTaskList(val task: Task) : TaskEvents
     data class RemoveTaskList(val task: Task) : TaskEvents
     data object CleanTaskList : TaskEvents
+    data object DeleteTasks: TaskEvents
 }

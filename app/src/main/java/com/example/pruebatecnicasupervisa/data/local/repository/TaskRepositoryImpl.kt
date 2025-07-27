@@ -31,8 +31,15 @@ class TaskRepositoryImpl(
 
     }
 
-    override suspend fun deleteTask(task: Task) {
-        TODO("Not yet implemented")
+    override suspend fun deleteTask(taskList: Set<Task>): Result<Unit> {
+        return try {
+            taskList.forEach {
+                taskDao.deleteTask(it.toEntity())
+            }
+            Result.success(Unit)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
     }
 
     override suspend fun filterTasks(priority: Priority?, state: State?): Result<Flow<List<Task>>> {

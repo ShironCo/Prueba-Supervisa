@@ -21,16 +21,21 @@ class TaskViewModel @Inject constructor(
     val states = MutableStateFlow(TaskStates())
 
     init {
+        states.update {
+            it.copy(
+                progressIndicatorMessage = "Cargando tareas"
+            )
+        }
         viewModelScope.launch {
             taskRepository.getTasks().onSuccess { flow ->
                 flow.collectLatest { tasks ->
                     states.update {
                         it.copy(
-                            taskList = tasks
+                            taskList = tasks,
+                            progressIndicatorMessage = null
                         )
                     }
                 }
-
             }
         }
     }
@@ -92,6 +97,24 @@ class TaskViewModel @Inject constructor(
                     it.copy(
                         taskListSelected = it.taskListSelected - events.task
                     )
+                }
+            }
+
+            TaskEvents.DeleteTasks -> {
+                states.update {
+                    it.copy(
+                        progressIndicatorMessage = "Eliminando tareas"
+                    )
+                }
+                viewModelScope.launch {
+                    taskRepository.deleteTask(states.value.taskListSelected).onSuccess {
+                        states.update {
+                            it.copy(
+                                progressIndicatorMessage = null,
+                                taskListSelected = emptySet()
+                            )
+                        }
+                    }
                 }
             }
         }

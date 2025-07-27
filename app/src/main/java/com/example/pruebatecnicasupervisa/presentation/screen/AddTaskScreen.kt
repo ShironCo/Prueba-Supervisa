@@ -82,8 +82,8 @@ fun AddTaskScreen(
             SnackbarHost(hostState = snackBarHostState){
                 Snackbar(
                     snackbarData = it,
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.surface
                 )
             }
         },
