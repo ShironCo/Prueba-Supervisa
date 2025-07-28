@@ -5,6 +5,10 @@ import com.example.pruebatecnicasupervisa.domain.model.State
 import com.example.pruebatecnicasupervisa.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 
+/**
+Interfaz que define las operaciones del repositorio para la gestión de tareas.
+ */
+
 interface TaskRepository {
     suspend fun getTasks(): Result<Flow<List<Task>>>
     suspend fun insertTask(task: Task) : Result<Unit>

@@ -29,7 +29,7 @@ fun FilterChip(
         selected = selected,
         enabled = enable,
         colors = FilterChipDefaults.filterChipColors(
-            labelColor = Color.Black,
+            labelColor = MaterialTheme.colorScheme.onSecondary,
             selectedContainerColor = selectedContainerColor,
             selectedLabelColor = selectedLabelColor,
             disabledSelectedContainerColor = selectedContainerColor,

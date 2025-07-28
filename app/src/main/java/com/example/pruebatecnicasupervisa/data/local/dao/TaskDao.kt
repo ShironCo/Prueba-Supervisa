@@ -10,7 +10,10 @@ import com.example.pruebatecnicasupervisa.domain.model.Priority
 import com.example.pruebatecnicasupervisa.domain.model.State
 import kotlinx.coroutines.flow.Flow
 
-
+/**
+ * Interfaz de acceso a datos (DAO) para la entidad TaskEntity.
+ * Define las operaciones de inserción, consulta, eliminación y filtrado de tareas en la base de datos.
+ */
 @Dao
 interface TaskDao {
 
@@ -27,6 +30,7 @@ interface TaskDao {
     @Query("DELETE FROM TaskEntity WHERE task_id = :taskId")
     suspend fun deleteTaskById(taskId: String)
 
+    //Filtra
     @Query(
         """ SELECT * FROM TaskEntity 
     WHERE (:status IS NULL OR status = :status)

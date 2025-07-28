@@ -62,8 +62,8 @@ fun DatePickerFieldToModal(
                 }
             },
         colors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = Color.Black,
-            unfocusedTextColor = Color.Black,
+            focusedTextColor = MaterialTheme.colorScheme.onSecondary,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSecondary,
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent,
             focusedContainerColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),

@@ -176,7 +176,7 @@ fun EditTaskScreen(
                     modifier = Modifier.padding(vertical = 10.dp),
                     text = "Prioridad*",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -200,7 +200,7 @@ fun EditTaskScreen(
                     modifier = Modifier.padding(vertical = 10.dp),
                     text = "Estado*",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),

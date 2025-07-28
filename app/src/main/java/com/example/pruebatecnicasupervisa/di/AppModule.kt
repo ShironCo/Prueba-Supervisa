@@ -13,7 +13,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
+/**
+ Aquí se inyectan automáticamente las clases necesarias gracias a Dagger Hilt,
+ evitando así la creación manual de instancias en cada uso.
+ Esto mejora la modularidad, el mantenimiento y la escalabilidad del código.
+ */
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
