@@ -3,7 +3,7 @@
 Aplicación móvil desarrollada en **Android con Kotlin** utilizando **Jetpack Compose** como framework principal para la creación de interfaces modernas y reactivas. Esta app permite gestionar tareas (crear, listar, filtrar y eliminar), con almacenamiento local persistente y arquitectura escalable.
 ---
 ##  DESCARGABLE
-Recordar activar la opción de permitir descargar de fuentes desconocidas.
+Recordar activar la opción permitir descargar fuentes desconocidas.
 URL - https://drive.google.com/file/d/1cXsRkFfdtbeWogTZytrjj-WirWSyJKwx/view?usp=drive_link
 
 ##  Tecnologías utilizadas
