@@ -24,6 +24,9 @@ interface TaskDao {
     @Delete
     suspend fun deleteTask(taskEntity: TaskEntity)
 
+    @Query("DELETE FROM TaskEntity WHERE task_id = :taskId")
+    suspend fun deleteTaskById(taskId: String)
+
     @Query(
         """ SELECT * FROM TaskEntity 
     WHERE (:status IS NULL OR status = :status)

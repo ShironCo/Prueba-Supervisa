@@ -42,6 +42,15 @@ class TaskRepositoryImpl(
         }
     }
 
+    override suspend fun deleteTaskById(taskId: String): Result<Unit> {
+        return try {
+            taskDao.deleteTaskById(taskId)
+            Result.success(Unit)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
+    }
+
     override suspend fun filterTasks(priority: Priority?, state: State?): Result<Flow<List<Task>>> {
         return try{
             val entities = taskDao.filterTasks(

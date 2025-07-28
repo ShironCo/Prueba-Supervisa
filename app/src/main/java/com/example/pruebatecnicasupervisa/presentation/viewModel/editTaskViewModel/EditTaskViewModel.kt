@@ -89,7 +89,10 @@ class EditTaskViewModel @Inject constructor(
                     Log.d("OBJETO", task.toString())
                     taskRepository.insertTask(task).onSuccess {
                         states.update {
-                            it.copy(snackBarMessage = "Tarea editada")
+                            it.copy(
+                                snackBarMessage = "Tarea editada",
+                                errorMessage = ""
+                            )
                         }
                     }.onFailure { error ->
                         states.update {
@@ -105,6 +108,28 @@ class EditTaskViewModel @Inject constructor(
                         snackBarMessage = ""
                     )
                 }
+
+            EditTaskEvents.DeleteTask -> {
+                viewModelScope.launch {
+                    states.value.idTask?.let {
+                        taskRepository.deleteTaskById(it).onSuccess {
+                            states.update {
+                                it.copy(
+                                    isTaskDelete = true
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            is EditTaskEvents.SetIsTaskDelete -> {
+                states.update {
+                    it.copy(
+                        isTaskDelete = events.value
+                    )
+                }
+            }
         }
         }
     }

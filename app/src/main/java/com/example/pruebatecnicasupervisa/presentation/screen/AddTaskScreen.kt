@@ -170,7 +170,7 @@ fun AddTaskForm(
                     modifier = Modifier.padding(vertical = 20.dp),
                     text = "Agregar tarea",
                     style = MaterialTheme.typography.titleMedium,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 AddTaskTextField(
                     value = states.title,
@@ -315,8 +315,8 @@ fun AddTaskTextField(
                 onValueChange(it)
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
+                focusedTextColor = MaterialTheme.colorScheme.onSecondary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSecondary,
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
                 focusedContainerColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),

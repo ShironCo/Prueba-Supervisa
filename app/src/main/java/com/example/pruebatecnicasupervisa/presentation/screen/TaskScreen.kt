@@ -2,8 +2,13 @@ package com.example.pruebatecnicasupervisa.presentation.screen
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
@@ -69,7 +74,7 @@ import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.T
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskStates
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskViewModel
 
-@SuppressLint("UnusedContentLambdaTargetStateParameter")
+@SuppressLint("UnusedContentLambdaTargetStateParameter", "SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskScreen(
@@ -83,27 +88,34 @@ fun TaskScreen(
         viewModel.onEvent(TaskEvents.FilterTask)
     }
 
+    BackHandler(
+        states.currentTaskEdit != null
+    ) {
+        viewModel.onEvent(TaskEvents.SetCurrentTaskEdit(null))
+    }
 
 
     AnimatedVisibility(visible = states.progressIndicatorMessage != null) {
-        Dialog(onDismissRequest = {}) {
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+        states.progressIndicatorMessage?.let {
+            Dialog(onDismissRequest = {}) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    shape = MaterialTheme.shapes.medium
                 ) {
-                    CircularProgressIndicator()
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = states.progressIndicatorMessage ?: "",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSecondary
-                    )
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator()
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSecondary
+                        )
+                    }
                 }
             }
         }
@@ -156,15 +168,15 @@ fun TaskScreen(
         },
         floatingActionButton = {
             if (states.currentTaskEdit == null)
-            FloatingActionButton(
-                onClick = {
-                    navigationHostController.navigate(NavigationRoutes.AddTaskScreen.route)
-                },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.surface
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Agregar Tarea")
-            }
+                FloatingActionButton(
+                    onClick = {
+                        navigationHostController.navigate(NavigationRoutes.AddTaskScreen.route)
+                    },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.surface
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Agregar Tarea")
+                }
         }
     ) { padding ->
         TaskBody(
@@ -173,13 +185,25 @@ fun TaskScreen(
         ) { event ->
             viewModel.onEvent(event)
         }
-        states.currentTaskEdit?.let {
-            AnimatedContent(targetState = it, label = "") { task ->
+        AnimatedVisibility(
+            visible = states.currentTaskEdit != null,
+            enter = slideInHorizontally(
+                initialOffsetX = { fullWidth -> fullWidth},
+                animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+            ),
+            exit = slideOutHorizontally(
+                targetOffsetX = { fullWidth -> -fullWidth},
+                animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+            )
+        ) {
+            states.currentTaskEdit?.let {
                 EditTaskScreen(
                     modifier = Modifier.padding(padding),
-                    task
+                    it,
+                    viewModelTask = viewModel
                 )
             }
+
         }
     }
 
