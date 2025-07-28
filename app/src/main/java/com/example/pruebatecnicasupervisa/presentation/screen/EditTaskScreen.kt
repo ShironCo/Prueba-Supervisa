@@ -122,7 +122,6 @@ fun EditTaskScreen(
     }
     Surface(
         modifier = modifier
-            .padding(top = 10.dp)
             .fillMaxSize()
     ) {
         LazyColumn(

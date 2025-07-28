@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -47,6 +48,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -70,6 +72,7 @@ import com.example.pruebatecnicasupervisa.presentation.ui.components.TaskCard
 import com.example.pruebatecnicasupervisa.presentation.ui.components.TopBar
 import com.example.pruebatecnicasupervisa.presentation.ui.navigation.NavigationRoutes
 import com.example.pruebatecnicasupervisa.presentation.viewModel.addTaskViewModel.AddTaskEvents
+import com.example.pruebatecnicasupervisa.presentation.viewModel.editTaskViewModel.EditTaskEvents
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskEvents
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskStates
 import com.example.pruebatecnicasupervisa.presentation.viewModel.taskViewModel.TaskViewModel
@@ -87,11 +90,49 @@ fun TaskScreen(
     ) {
         viewModel.onEvent(TaskEvents.FilterTask)
     }
+    var alertDialog by remember {
+        mutableStateOf(false)
+    }
 
     BackHandler(
         states.currentTaskEdit != null
     ) {
         viewModel.onEvent(TaskEvents.SetCurrentTaskEdit(null))
+    }
+
+    if (alertDialog) {
+        AlertDialog(
+            onDismissRequest = { alertDialog = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.onEvent(TaskEvents.DeleteTasks)
+                    alertDialog = false
+                }) {
+                    Text(text = "Eliminar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    alertDialog = false
+                }) {
+                    Text(text = "Cancelar")
+                }
+            },
+            title = {
+                Text(
+                    text = "¿Seguro deseas eliminar la tarea d?",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            },
+            text = {
+                Text(
+                    text = "Se eliminara la tarea de forma permanente, no habra forma de recuperarla",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.8f)
+                )
+            }
+        )
     }
 
 
@@ -145,7 +186,7 @@ fun TaskScreen(
                     ),
                     actions = {
                         IconButton(onClick = {
-                            viewModel.onEvent(TaskEvents.DeleteTasks)
+                            alertDialog = true
                         }) {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,
