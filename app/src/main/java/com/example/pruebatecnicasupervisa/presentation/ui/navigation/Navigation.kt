@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pruebatecnicasupervisa.presentation.screen.AddTaskScreen
+import com.example.pruebatecnicasupervisa.presentation.screen.PokemonScreen
 import com.example.pruebatecnicasupervisa.presentation.screen.TaskScreen
 
 @Composable
@@ -40,6 +41,23 @@ fun Navigation() {
             }
         ) {
             AddTaskScreen(navHostController)
+        }
+        composable(
+            route = NavigationRoutes.PokemonScreen.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth / 2 },
+                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth / 2 },
+                    animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                )
+            }
+        ){
+            PokemonScreen()
         }
     }
 }

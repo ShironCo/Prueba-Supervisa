@@ -3,7 +3,6 @@ package com.example.pruebatecnicasupervisa.data.mapper
 import com.example.pruebatecnicasupervisa.data.local.model.TaskEntity
 import com.example.pruebatecnicasupervisa.domain.model.Task
 
-// De Entity a Domain
 fun TaskEntity.toDomain(): Task {
     return Task(
         task_id = task_id,
@@ -15,7 +14,6 @@ fun TaskEntity.toDomain(): Task {
     )
 }
 
-// De Domain a Entity
 fun Task.toEntity(): TaskEntity {
     return TaskEntity(
         task_id = task_id,

@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
+    alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -41,25 +42,24 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    kapt{
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
+    //COUL
+    implementation(libs.coil)
+    //RETROFIT
+    implementation(libs.retrofit)
+    implementation(libs.retrofitConverter)
     //HILT
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
-    kapt(libs.hilt.navigation.compiler)
+    ksp(libs.hilt.navigation.compiler)
     //NAVEGATION
     implementation(libs.navegation)
     //SPLASH
@@ -69,7 +69,7 @@ dependencies {
     //ROOM
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

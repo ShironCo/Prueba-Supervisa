@@ -222,6 +222,7 @@ fun TaskScreen(
     ) { padding ->
         TaskBody(
             modifier = Modifier.padding(padding),
+            navigationHostController = navigationHostController,
             states = states
         ) { event ->
             viewModel.onEvent(event)
@@ -255,12 +256,22 @@ fun TaskScreen(
 fun TaskBody(
     modifier: Modifier,
     states: TaskStates,
+    navigationHostController : NavHostController,
     onClick: (TaskEvents) -> Unit
 ) {
     Surface(
         modifier = modifier.fillMaxSize()
     ) {
         LazyColumn {
+            item {
+                Button(
+                    onClick = {
+                        navigationHostController.navigate(NavigationRoutes.PokemonScreen.route)
+                    }
+                ) {
+                    Text("Ir a PokemonApi")
+                }
+            }
             item {
                 LazyRow {
                     item {
